@@ -1,7 +1,7 @@
 const loginCredentials = {
         name: 'sandiego',
         uaa: 'https://auth.aa.cityiq.io/oauth/token',
-        eventservice: 'https://sandiego.cityiq.io/api/v2/',
+        eventservice: 'https://sandiego.cityiq.io/api/v2/event/',
         metadataservice: 'https://sandiego.cityiq.io/api/v2/',
         mediaservice: 'https://sandiego.cityiq.io/api/v2/',
         websocket: 'wss://{yourWebSocketURL}', //Necessary only for websocket.js
