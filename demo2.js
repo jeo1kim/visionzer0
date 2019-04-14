@@ -20,27 +20,41 @@ async function demo2 (){
 
     //obtaining traffic data by eventTypes
     let assets = await ciq.assets(credentials.traffic,'TFEVT')
-    console.log("TFEVT")
-    console.log(assets[0]) // returns the first asset found
+    // console.log("TFEVT")
+    // console.log(assets[0]) // returns the first asset found
 
     // return all traffic events in last 12 hours related to the assetUid found above
-    let events = await ciq.events(credentials.traffic, assets[0].assetUid,'assetUid','TFEVT',ciq.timecalc(12))
-    console.log("12 hours")
-    console.log(events[0]) 
+    // let events = await ciq.events(credentials.traffic, assets[0].assetUid,'assetUid','TFEVT',ciq.timecalc(12))
+    // console.log("12 hours")
+    // console.log(events[0]) 
 
-    for (var i = events.length - 1; i >= 0; i--) {
+    // console.log("location "+location[0])
+    let location = await ciq.locations(credentials.traffic,'TRAFFIC_LANE')
+
+    console.log("pulling data from "+assets.length+"assets")
+
+    for (var j = assets.length - 1; j >= 0; j--) {
+        let events = await ciq.events(credentials.traffic, assets[j].assetUid,'assetUid','TFEVT',ciq.timecalc(12))
+        for (var i = events.length - 1; i >= 0; i--) {
         // console.log(events[i])
 
-        try {
+            try {
+                var timestamp = events[i]['timestamp']
+                var speed = events[i]['measures']['speed']
+            } catch(e) {
+                console.log(e)
+            }
 
-            var timestamp = events[i]['timestamp']
-            var speed = events[i]['measures']['speed']
-        } catch(e) {
-            console.log(e)
+            var coor = assets[j].coordinates.split(":")
+            var lat = coor[0]
+            var long = coor[1]
+            
+            console.log("time: "+timestamp+" speed: "+speed+" METERS_PER_SEC "+" coordinates lat "+lat+" long "+long)
+
         }
-        console.log("time: "+timestamp+" speed: "+speed+" METERS_PER_SEC ")
-
     }
+
+    
 
 
     // return the first traffic lane location found within the tenant bounding box
