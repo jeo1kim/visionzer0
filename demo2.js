@@ -3,11 +3,15 @@
   
 // For more details on simulated data please reference the API Documentation Appendix A (https://ie-cities-docs.run.aws-usw02-pr.ice.predix.io/#r_intelligent_cities_appendix_a.html)
 // Your municipality will provide the necessary urls, username, password and predix zone ids
+'use strict';
 
+var fs = require('fs');
 // cityiq.js sets up the requests
 const cityiq = require("./cityiq.js")
 // cityCredentials.js contains all the necessary credentials for reference
 const credentials = require("./cityCredentials")
+
+const rows =[]
 
 // this function is where queries can be specified.  
 async function demo2 (){
@@ -33,14 +37,18 @@ async function demo2 (){
 
     console.log("pulling data from "+assets.length+"assets")
 
-    for (var j = assets.length - 1; j >= 0; j--) {
-        let events = await ciq.events(credentials.traffic, assets[j].assetUid,'assetUid','TFEVT',ciq.timecalc(12))
+    rows.push(["timestamp", "speed: METERS_PER_SEC", "lat", "long"])
+    for (var j = assets.length-1; j >= 0; j--) {
+        let events = await ciq.events(credentials.traffic, assets[j].assetUid,'assetUid','TFEVT',ciq.timecalc(3))
+
+        // const arr = []
+        var speed
         for (var i = events.length - 1; i >= 0; i--) {
         // console.log(events[i])
-
+            const arr = []
             try {
                 var timestamp = events[i]['timestamp']
-                var speed = events[i]['measures']['speed']
+                speed = events[i]['measures']['speed']
             } catch(e) {
                 console.log(e)
             }
@@ -49,19 +57,60 @@ async function demo2 (){
             var lat = coor[0]
             var long = coor[1]
             
-            console.log("time: "+timestamp+" speed: "+speed+" METERS_PER_SEC "+" coordinates lat "+lat+" long "+long)
-
+            // console.log("time: "+timestamp+" speed: "+speed+" METERS_PER_SEC "+" coordinates lat "+lat+" long "+long)
+            arr.push(timestamp)
+            arr.push(speed)
+            arr.push(lat)
+            arr.push(long)
+            // if (speed != 0) {
+                rows.push(arr)
+            // }
         }
+        
+        
     }
-
-    
-
-
-    // return the first traffic lane location found within the tenant bounding box
-    // let location = await ciq.locations(credentials.traffic,'TRAFFIC_LANE')
-    // console.log("TRAFFIC_LANE")
-    // console.log(location[0])
+    // console.log(rows)
+    stringify(rows)
+    var file = fs.createWriteStream('array0.txt');
+    file.on('error', function(err) { /* error handling */ });
+    rows.forEach(function(v) { file.write(v.join(', ') + '\n'); });
+    file.end();
+    // let csvContent = "data:text/csv;charset=utf-8," + rows.map(e=>e.join(",")).join("\n");
 }
+
+
+const path = require('path');
+const os = require('os');
+
+// output file in the same folder
+const filename = path.join(__dirname, 'output.csv');
+
 
 // instantiates demo function to run queries
 demo2()
+// fs.writeFileSync(filename, rows.map(e=>e.join(",")).join("\n"));
+
+
+// choose another string to temporally replace commas if necessary
+
+
+'use strict';
+
+var stringify = require('csv-stringify');
+console.log("rows"+rows)
+
+
+// // 2. Another way - if you don't need the double quotes in the generated csv and you don't have comas in rows' values
+// let csv = myObj.rows.join('\n')
+
+stringify(rows, function(err, output) {
+  fs.writeFile('name.csv', output, 'utf8', function(err) {
+    if (err) {
+      console.log('Some error occured - file either not saved or corrupted file saved.');
+    } else {
+      console.log('It\'s saved!');
+    }
+  });
+});
+
+
