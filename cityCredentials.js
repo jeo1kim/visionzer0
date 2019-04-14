@@ -1,18 +1,18 @@
 const loginCredentials = {
-        name: '{yourCity}',
-        uaa: '{yourUAAurl}',
-        eventservice: '{yourEventServiceURL}/v2/',
-        metadataservice: '{yourMetaDataServiceURL}/v2/',
-        mediaservice: '{yourMediaServiceURL}/v2/',
+        name: 'sandiego',
+        uaa: 'https://auth.aa.cityiq.io/oauth/token',
+        eventservice: 'https://sandiego.cityiq.io/api/v2/',
+        metadataservice: 'https://sandiego.cityiq.io/api/v2/',
+        mediaservice: 'https://sandiego.cityiq.io/api/v2/',
         websocket: 'wss://{yourWebSocketURL}', //Necessary only for websocket.js
-        developer: '{yourClientID}:{yourClientSecret}',
-        parking: '{your-Parking-PredixZoneID}',
-        environment: '{your-Environment-PredixZoneID}',
-        pedestrian: '{your-Pedestrian-PredixZoneID}',
-        traffic: '{your-Traffic-PredixZoneID}',
-        video: '{your-Video-PredixZoneID}',
-        images: '{your-Images-PredixZoneID}',
-        bbox: '{lat}:{long},{lat}:{long}'
+        developer: 'PublicAccess:uVeeMuiue4k=',
+        parking: 'SD-IE-PARKING',
+        environment: 'SD-IE-ENVIRONMENTAL',
+        pedestrian: 'SD-IE-PEDESTRIAN',
+        traffic: 'SD-IE-TRAFFIC',
+        video: 'SD-IE-VIDEO',
+        images: 'SD-IE-IMAGE',
+        bbox: '33.077762:-117.663817,32.559574:-116.584410'
     }
 
 module.exports = loginCredentials

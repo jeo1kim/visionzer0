@@ -17,13 +17,15 @@ function request(url, headers, body) {
 
 // cityiq main function to be called at least once in each demo.js file
 module.exports=async function(tenant) {
-    console.log('starting requests')
+    console.log('starting requests '+tenant.uaa)
     /* establishing access by getting the client_token with uaa url 
        and username and password. 
        While this request is a basic auth request, the client token will be 
        used for bearer authentication. */
     let bearer = (await request(tenant.uaa+'?grant_type=client_credentials', {authorization: 'Basic '+btoa(tenant.developer)}))
     let client_token = bearer.access_token
+
+    console.log('token '+client_token)
 
     // this function searches assets by their content variables (i.e. assetType, eventTypes, mediaTypes, coordinates etc)
     async function assets(zone, type, id){ 

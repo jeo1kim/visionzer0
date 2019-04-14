@@ -11,7 +11,7 @@ const credentials = require("./cityCredentials")
 
 // this function is where queries can be specified.  
 async function demo2 (){
-    console.log('obtaining traffic data')
+    console.log('obtaining traffic data '+credentials.traffic)
     // specifies the credentials and begins authentication - see cityiq.js
     let ciq = await cityiq(credentials)
     
@@ -20,14 +20,17 @@ async function demo2 (){
 
     //obtaining traffic data by eventTypes
     let assets = await ciq.assets(credentials.traffic,'TFEVT')
+    console.log("TFEVT")
     console.log(assets[0]) // returns the first asset found
 
     // return all traffic events in last 12 hours related to the assetUid found above
     let events = await ciq.events(credentials.traffic,assets[0].assetUid,'assetUid','TFEVT',ciq.timecalc(12))
+    console.log("12 hours")
     console.log(events[0]) 
 
     // return the first traffic lane location found within the tenant bounding box
     let location = await ciq.locations(credentials.traffic,'TRAFFIC_LANE')
+    console.log("TRAFFIC_LANE")
     console.log(location[0])
 }
 
