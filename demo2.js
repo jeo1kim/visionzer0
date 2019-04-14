@@ -11,7 +11,7 @@ const credentials = require("./cityCredentials")
 
 // this function is where queries can be specified.  
 async function demo2 (){
-    console.log('obtaining traffic data '+credentials.traffic)
+    console.log('obtaining traffic data ')
     // specifies the credentials and begins authentication - see cityiq.js
     let ciq = await cityiq(credentials)
     
