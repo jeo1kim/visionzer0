@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "csv-stringify": "^5.3.0",
-    "export-to-csv": "^0.2.1",
-    "stringify": "^5.2.0"
-  }
-}
